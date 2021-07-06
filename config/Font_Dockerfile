@@ -1,0 +1,11 @@
+FROM harbor.zkj.poc/library/rip-nginx
+
+MAINTAINER CI_HELPER
+LABEL desc=前端打包镜像
+
+ENV TZ "Asia/Shanghai"
+ENV LANG en_US.UTF-8
+
+COPY {_archive_path} /usr/share/nginx/html/
+
+EXPOSE 8080

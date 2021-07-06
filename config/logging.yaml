@@ -1,0 +1,35 @@
+version: 1
+disable_existing_loggers: false
+
+
+
+formatters:
+  standard:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  error:
+    format: "%(levelname)s <PID %(process)d:%(processName)s> %(name)s.%(funcName)s(): %(message)s"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: standard
+    stream: ext://sys.stdout
+
+  file_handler:
+    class: logging.FileHandler
+    level: INFO
+    formatter: standard
+    filename: $HOMEPATH/ci-helper.log
+    encoding: utf8
+
+root:
+  level: WARN
+  handlers: [ console ,file_handler ]
+  propogate: yes
+
+#loggers:
+#  server:
+#    level: DEBUG #允许打印DEBUG及以上log
+#    handlers: [warn_file_handler]
+#    propagate: true #设为false则禁止将日志消息传递给父级记录器的处理程序中

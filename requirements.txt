@@ -1,0 +1,4 @@
+humanfriendly==9.1
+coloredlogs==15.0
+paramiko==2.7.2
+tenacity==7.0.0
