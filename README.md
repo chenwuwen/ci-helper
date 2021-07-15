@@ -11,7 +11,8 @@
 > pyinstaller -w -F -i favicon.ico main.py
 
 > 使用pyinstaller进行打包,需要注意的是当前使用的python版本要跟操作系统对应。
-> python3.9不支持win7。因此我使用了python3.7.
+> python3.9不支持win7。因此我使用了python3.7。需要注意如果在python3.9下安装了pyinstaller 那么在python3.7下可以直接使用pyinstaller命令,但是打出来的
+> 包并不能使用,因此需要单独在python3.7的环境下再次安装pyinstaller
 
 使用pyinstaller虽然可以方便的打成单个可执行文件，但是在不通的操作系统上，可能会有不一样的表现。
 而且pyinstaller对于一些配置文件读取有些麻烦。
