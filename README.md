@@ -1,6 +1,6 @@
 ## 生成requirements.txt
 
-> pipreqs . --encoding=utf8 --force 少依赖   pip freeze > requirements.txt
+> pipreqs . --encoding=utf8 --force 少依赖, 使用 pip freeze > requirements.txt
 
 ## 安装依赖
 
