@@ -69,7 +69,7 @@ def get_push_command(_dict, remote: str):
 def get_all_config():
     if not os.path.exists("config.json"):
         logging.info("配置文件不存在,创建初始化配置文件")
-        init_config = """{"host":"","user_name":"","password":"","port":"","push":FALSE,"remote":"","services":{}}"""
+        init_config = """{"host":"","user_name":"","password":"","port":"","push":false,"remote":"","services":{}}"""
         config = json.loads(init_config)
         logging.info(config)
         return save_config(config)
