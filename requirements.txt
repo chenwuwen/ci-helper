@@ -1,4 +1,15 @@
-humanfriendly==9.1
+bcrypt==3.2.0
+cffi==1.14.6
 coloredlogs==15.0
+cryptography==3.4.7
+humanfriendly==9.1
 paramiko==2.7.2
+pycparser==2.20
+PyNaCl==1.4.0
+PyQt5==5.15.4
+PyQt5-Qt5==5.15.2
+PyQt5-sip==12.9.0
+pyreadline==2.1
+PyYAML==5.4.1
+six==1.16.0
 tenacity==7.0.0
