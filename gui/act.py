@@ -36,7 +36,7 @@ class Action:
             # command = self.sshClient.ssh.invoke_shell()
             # command.send()
             # command.recv()
-            remote_docker_build_dir = time.time()
+            remote_docker_build_dir = remote_path + '/' + str(time.time())
             # 在服务器上创建一个目录,然后在该目录下进行Docker镜像的构建
             logging.info(f'在服务器上创建目录：{remote_docker_build_dir}')
             self.make_build_dir(remote_docker_build_dir)
