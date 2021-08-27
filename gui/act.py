@@ -26,6 +26,11 @@ class Action:
         except Exception as e:
             return False, str(e)
 
+    # 检测用户是否具有sudo权限,且使用sudo权限时是否免密
+    def check_user_sudo_info(self):
+        stdin, stdout, stderr = self.sshClient.ssh.exec_command('sudo -v')
+        return stderr.read().decode('UTF-8')
+
     # 在服务器上执行命令
     def exec_command_on_server(self, local_path: str, remote_path: str, file_name: str):
         try:
@@ -132,9 +137,11 @@ class Action:
     def make_build_dir(self, remote_docker_build_dir):
         logging.info("...........开始创建构建镜像目录............")
         # 经验发现,有时候创建目录的时候,实际创建成了文件,但是在linux中,不能存在文件与文件夹名一致,因此先删除文件
+        # 这个路径会是根路径吗？不会的,因为客户端不管传哪个路径过来,程序都会添加一个时间戳作为路径的后缀,因此不必担心误删除
         self.sshClient.ssh.exec_command(f"sudo rm -f {remote_docker_build_dir}")
-        # 先在~路径下创建一个新目录
-        self.sshClient.ssh.exec_command(f"sudo mkdir {remote_docker_build_dir}")
+        # 先在路径下创建一个新目录,-p 表示级联创建,这样即使客户端传过来的目录是不存在的,也可以进行创建
+        stdin, stdout, stderr = self.sshClient.ssh.exec_command(f"sudo mkdir -p {remote_docker_build_dir}")
+        logging.info(stderr.read().decode())
         # 判断目录是否存在,如果存在返回True,不存在返回NULL
         stdin, stdout, stderr = self.sshClient.ssh.exec_command(
             f"if [ -d {remote_docker_build_dir} ];then echo 'True';fi; ")
