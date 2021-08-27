@@ -163,7 +163,7 @@ class Application(QWidget):
         hbox.addWidget(remote_label)
         hbox.addWidget(self.remote_dir)
         hbox.addWidget(self.btn_chooseFile)
-        # 设置信号
+        # 设置点击 选择文件 按钮的信号
         self.btn_chooseFile.clicked.connect(self.slot_btn_choose_file)
 
     # 创建执行命令组件
@@ -228,6 +228,30 @@ class Application(QWidget):
             self.connect_state.setText("正在连接,请稍后..")
         if self.wait_count % 3 == 2:
             self.connect_state.setText("正在连接,请稍后...")
+
+    # 检测用户权限
+    def current_user_permissions(self, permissions_info):
+        # permissions_info 可能有三个值
+        # sudo: no tty present and no askpass program specified 表示用户有sudo权限,但是没有配置免密登录
+        # Sorry, user test may not run sudo on VM - 0 - 4 - centos. 表示用户没有sudo权限
+        # 为空
+        if len(permissions_info):
+            if 'no tty present' in permissions_info:
+                box = QMessageBox(QMessageBox.Warning, "警告", f'当前登录用户,sudo权限未配置免密登录,执行可能出现问题：\n {permissions_info}')
+                # 不显示系统状态栏
+                box.setWindowFlag(Qt.Tool)
+                box.exec()
+
+            elif 'may not run sudo' in permissions_info:
+                box = QMessageBox(QMessageBox.Warning, "警告", f'当前登录用户,不存在sudo权限,执行可能出现问题：\n {permissions_info}')
+                # 不显示系统状态栏
+                box.setWindowFlag(Qt.Tool)
+                box.exec()
+            else:
+                box = QMessageBox(QMessageBox.Warning, "警告", f'当前登录用户,sudo权限异常,执行可能出现问题：\n {permissions_info}')
+                # 不显示系统状态栏
+                box.setWindowFlag(Qt.Tool)
+                box.exec()
 
     # 初始化配置
     def init_config(self):
@@ -306,8 +330,12 @@ class Application(QWidget):
             self.connect_status = 2
             self.connect_state.setText("连接成功")
             self.remote_dir.setText(msg.strip())
-            self.btn_exec.setEnabled(True)
+
             self.connect_state.setStyleSheet("background-color:green")
+            # 检测用户sudo权限
+            self.current_user_permissions(self.action.check_user_sudo_info())
+            # 执行按钮设置为允许
+            self.btn_exec.setEnabled(True)
         else:
             self.connect_status = 3
             self.connect_state.setText(msg)
